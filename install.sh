@@ -5,8 +5,11 @@
 # GitHub: https://github.com/RahamatGazi/RG-AIO
 # OS Support: Ubuntu 24.04
 # =============================================
-cp menu /usr/bin/menu
+
+# ✅ Install RG-AIO menu
+wget -O /usr/bin/menu https://raw.githubusercontent.com/RahamatGazi/RG-AIO/main/menu
 chmod +x /usr/bin/menu
+
 clear
 echo -e "\e[92m=============================================="
 echo -e "  🛡️ RG-AIO VPN TUNNELING AUTO INSTALLER"
@@ -92,7 +95,7 @@ systemctl daemon-reload
 systemctl enable sshws
 systemctl restart sshws
 
-# Output Info
+# ✅ Success Info
 clear
 echo -e "\e[92m=============================================="
 echo -e " ✅ RG-AIO VPN Installed Successfully!"

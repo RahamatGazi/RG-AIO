@@ -5,7 +5,8 @@
 # GitHub: https://github.com/RahamatGazi/RG-AIO
 # OS Support: Ubuntu 24.04
 # =============================================
-
+cp menu /usr/bin/menu
+chmod +x /usr/bin/menu
 clear
 echo -e "\e[92m=============================================="
 echo -e "  🛡️ RG-AIO VPN TUNNELING AUTO INSTALLER"

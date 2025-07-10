@@ -1,4 +1,5 @@
 #!/bin/bash
+# RG-AIO Terminal Panel Menu - Rahamat Gazi (RG)
 
 clear
 # Colors
@@ -25,27 +26,26 @@ TIME=$(date +%T)
 echo -e "${g}╔════════════════════════════════════╗"
 echo -e "║      🛡️  SCRIPT RG-AIO by RG        ║"
 echo -e "╚════════════════════════════════════╝${c}"
-echo -e "${b}┌──────────────── SYSTEM INFO ──────────────┐${c}"
+echo -e "${b}┌──────────── SYSTEM INFO ─────────────┐${c}"
 echo -e "${y} Hostname     : $HOSTNAME"
 echo -e " Public IP    : $IPV4"
 echo -e " Domain       : $DOMAIN"
 echo -e " ISP          : $ISP"
-echo -e " Total RAM    : $RAM_TOTAL MB"
-echo -e " Used RAM     : $RAM_USED MB"
+echo -e " RAM          : $RAM_USED / $RAM_TOTAL MB"
 echo -e " CPU Cores    : $CORES"
 echo -e " Load Average : $CPU_LOAD"
 echo -e " OS           : $OS"
 echo -e " Date         : $DATE"
 echo -e " Time         : $TIME${c}"
-echo -e "${b}└────────────────────────────────────────────┘${c}"
+echo -e "${b}└─────────────────────────────────────┘${c}"
 
-# Status Section (optional static for now)
+# Service Status (Static Example)
 echo -e "${g} SSH       : ON  ${c}|${g}  Dropbear : ON  ${c}|${g} SSH-WS : ON ${c}"
 echo -e "${g} NGINX     : ON  ${c}|${g}  STUNNEL  : ON  ${c}|${g} XRAY   : ON ${c}"
 echo ""
 
-# Menu
-echo -e "${b}┌────────────── INFO MENU ───────────────┐${c}"
+# Menu Options
+echo -e "${b}┌────────────── RG-AIO MENU ──────────────┐${c}"
 echo -e "${y} [01] SSH / WebSocket"
 echo -e " [02] VMESS"
 echo -e " [03] DOMAIN"
@@ -56,20 +56,52 @@ echo -e " [07] RAM & CPU USAGE"
 echo -e " [08] SYSTEM INFO"
 echo -e " [09] MENU SYSTEM"
 echo -e " [10] EXIT${c}"
-echo -e "${b}└─────────────────────────────────────────┘${c}"
-echo -ne "${y}Select menu ➤ ${c}"; read opt
+echo -e "${b}└────────────────────────────────────────┘${c}"
+echo -ne "${y}Select ➤ ${c}"; read opt
 
-# Handle input (basic for now)
 case $opt in
-    1) echo "Opening SSH/WS menu..." ;;
-    2) echo "Opening VMESS menu..." ;;
-    3) echo "Domain setup coming soon..." ;;
-    4) reboot ;;
-    5) netstat -tuln ;;
-    6) echo "Backup system loading..." ;;
-    7) top ;;
-    8) neofetch ;;
-    9) bash /usr/bin/menu ;;
-    10) exit ;;
-    *) echo "Invalid input. Try again." ;;
+  1)
+    echo -e "${g}🔐 SSH/WebSocket Menu:"
+    echo "1. Add User"
+    echo "2. Delete User"
+    echo "3. Check Login"
+    echo -ne "Choose ➤ "; read sopt
+    case $sopt in
+      1) read -p "Username: " u && read -p "Password: " p && useradd -M -s /bin/false $u && echo "$u:$p" | chpasswd && echo "✅ User $u created" ;;
+      2) read -p "Username to delete: " u && userdel $u && echo "✅ User $u deleted" ;;
+      3) echo -e "📋 Active SSH Users:" && who ;;
+      *) echo "Invalid option." ;;
+    esac ;;
+  2)
+    echo -e "${r}🔧 VMESS panel coming soon in RG-AIO Pro 🔥${c}" ;;
+  3)
+    echo -e "🌐 Domain Configuration:"
+    read -p "Enter new domain: " NEWDOMAIN
+    echo "$NEWDOMAIN" > /etc/xray/domain
+    echo "✅ Domain updated to $NEWDOMAIN" ;;
+  4)
+    echo "♻️ Rebooting VPS..." && sleep 2 && reboot ;;
+  5)
+    echo "📊 Listening Ports:"
+    ss -tuln ;;
+  6)
+    echo "📦 Creating backup..."
+    mkdir -p /root/rg-backup
+    cp /etc/xray/domain /root/rg-backup/domain.txt 2>/dev/null
+    cp /etc/ssl/rg/* /root/rg-backup/ 2>/dev/null
+    tar -czf /root/rg-backup.tar.gz /root/rg-backup
+    echo "✅ Backup saved to /root/rg-backup.tar.gz" ;;
+  7)
+    echo "📈 RAM and CPU usage:"
+    free -h
+    top -b -n1 | head -20 ;;
+  8)
+    echo "🖥 System Info:"
+    neofetch || hostnamectl ;;
+  9)
+    bash /usr/bin/menu ;;
+  10)
+    echo "🚪 Exiting..." && exit ;;
+  *)
+    echo "⛔ Invalid option!" ;;
 esac
